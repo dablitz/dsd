@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+
+last_ver=$(grep -v '^$' deb_versions.txt | tail -n 1)
+last_ver=(${last_ver//-/ })
+ver=${last_ver[0]}
+build=${last_ver[1]}
+echo "Previous version: {$ver} Previous build: {$build}"
+read -p "Version: " -e -i $ver ver
+read -p "Build: " -e -i $build build
+sudo rm -rf build
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release ../
+make -j16
+(echo "y"
+echo "Misc GnuRadio blocks."
+echo ""
+echo ""
+echo "n"
+echo "y"
+) | sudo checkinstall --install=no --fstrans=yes --pkgname=gr-dsd --requires="gnuradio \(\>= 3.10\)" --recommends="" --pkgversion=${ver} --pkgrelease=${build}
+fname=$(ls *.deb)
+echo $fname
+cp $fname ..
+cd ..
+new_ver=$(dpkg -I $fname | grep 'Version' | sed "s/Version: //")
+echo $new_ver >> deb_versions.txt
+dpkg -I $fname
