@@ -1,7 +1,7 @@
 #include "dsd.h"
 
 void
-processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, char *lcinfo)
+processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, char *lcinfo, FILE *logfile)
 {
 
   char tgid[17], tmpstr[255];
@@ -13,9 +13,11 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
   if (opts->p25lc == 1)
     {
       printf ("lcformat: %s mfid: %s lcinfo: %s ", lcformat, mfid, lcinfo);
+      fprintf (logfile, "lcformat: %s mfid: %s lcinfo: %s ", lcformat, mfid, lcinfo);
       if (opts->p25tg == 0)
         {
           printf ("\n");
+          fprintf (logfile, "\n");
         }
     }
 
@@ -47,11 +49,13 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
       if (opts->p25tg == 1)
         {
           printf ("tg: %li ", talkgroup);
+          fprintf (logfile, "tg: %li ", talkgroup);
         }
 
       if (opts->p25tg == 1)
         {
           printf ("tg: %li ", talkgroup);
+          fprintf (logfile, "tg: %li ", talkgroup);
 
           // the remaining 3 appear to be other active tg's on the system
           j = 0;
@@ -67,6 +71,7 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
           tmpstr[16] = 0;
           talkgroup = strtol (tmpstr, NULL, 2);
           printf ("%li ", talkgroup);
+          fprintf (logfile, "%li ", talkgroup);
           j = 0;
           for (i = 16; i < 28; i++)
             {
@@ -80,6 +85,7 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
           tmpstr[16] = 0;
           talkgroup = strtol (tmpstr, NULL, 2);
           printf ("%li ", talkgroup);
+          fprintf (logfile, "%li ", talkgroup);
           j = 0;
           for (i = 4; i < 16; i++)
             {
@@ -93,6 +99,7 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
           tmpstr[16] = 0;
           talkgroup = strtol (tmpstr, NULL, 2);
           printf ("%li\n", talkgroup);
+          fprintf (logfile, "%li\n", talkgroup);
         }
     }
 
@@ -137,6 +144,7 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
       if (opts->p25tg == 1)
         {
           printf ("tg: %li ", talkgroup);
+          fprintf (logfile, "tg: %li ", talkgroup);
         }
 
       j = 0;
@@ -151,10 +159,12 @@ processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, c
       if (opts->p25tg == 1)
         {
           printf ("src: %li emr: %c\n", source, lcinfo[0]);
+          fprintf (logfile, "src: %li emr: %c\n", source, lcinfo[0]);
         }
     }
   else if ((opts->p25tg == 1) && (opts->p25lc == 1))
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 }

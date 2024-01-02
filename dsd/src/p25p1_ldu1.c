@@ -24,7 +24,7 @@
 
 
 void
-processLDU1 (dsd_opts* opts, dsd_state* state)
+processLDU1 (dsd_opts* opts, dsd_state* state, FILE *logfile)
 {
   // extracts IMBE frames from LDU frame
   int i;
@@ -52,6 +52,7 @@ processLDU1 (dsd_opts* opts, dsd_state* state)
   if (opts->errorbars == 1)
     {
       printf ("e:");
+      fprintf (logfile, "e:");
     }
 
   // IMBE 1
@@ -188,11 +189,13 @@ processLDU1 (dsd_opts* opts, dsd_state* state)
   if (opts->errorbars == 1)
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 
   if (opts->p25status == 1)
     {
       printf ("lsd1: %s lsd2: %s\n", lsd1, lsd2);
+      fprintf (logfile, "lsd1: %s lsd2: %s\n", lsd1, lsd2);
     }
 
   // trailing status symbol
@@ -235,6 +238,8 @@ processLDU1 (dsd_opts* opts, dsd_state* state)
 
 #ifdef HEURISTICS_DEBUG
   printf("(audio errors, header errors, critical header errors) (%i,%i,%i)\n",
+          state->debug_audio_errors, state->debug_header_errors, state->debug_header_critical_errors);
+  fprintf(logfile, "(audio errors, header errors, critical header errors) (%i,%i,%i)\n",
           state->debug_audio_errors, state->debug_header_errors, state->debug_header_critical_errors);
 #endif
 
@@ -330,5 +335,5 @@ processLDU1 (dsd_opts* opts, dsd_state* state)
   lcinfo[54]  = hex_data[ 0][4] + '0';
   lcinfo[55]  = hex_data[ 0][5] + '0';
 
-  processP25lcw (opts, state, lcformat, mfid, lcinfo);
+  processP25lcw (opts, state, lcformat, mfid, lcinfo, logfile);
 }

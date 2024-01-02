@@ -19,7 +19,7 @@
 #include "dmr_const.h"
 
 void
-processDMRvoice (dsd_opts * opts, dsd_state * state)
+processDMRvoice (dsd_opts * opts, dsd_state * state, FILE *logfile)
 {
   // extracts AMBE frames from DMR frame
   int i, j, dibit;
@@ -115,6 +115,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
         }
       cachbits[24] = 0;
       printf ("%s ", cachbits);
+      fprintf (logfile, "%s ", cachbits);
 #endif
 
       // current slot frame 1
@@ -227,6 +228,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
       if ((j == 0) && (opts->errorbars == 1))
         {
           printf ("%s %s  VOICE e:", state->slot0light, state->slot1light);
+          fprintf (logfile, "%s %s  VOICE e:", state->slot0light, state->slot1light);
         }
 
 #ifdef DMR_DUMP
@@ -241,6 +243,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
         }
       syncbits[48] = 0;
       printf ("%s ", syncbits);
+      fprintf (logfile, "%s ", syncbits);
 #endif
 
       // current slot frame 2 second half
@@ -308,6 +311,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
         }
       cachbits[24] = 0;
       printf ("%s ", cachbits);
+      fprintf (logfile, "%s ", cachbits);
 #endif
 
 
@@ -359,6 +363,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
         }
       syncbits[48] = 0;
       printf ("%s ", syncbits);
+      fprintf (logfile, "%s ", syncbits);
 #endif
 
       if (j == 5)
@@ -377,6 +382,7 @@ processDMRvoice (dsd_opts * opts, dsd_state * state)
   if (opts->errorbars == 1)
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 
 }

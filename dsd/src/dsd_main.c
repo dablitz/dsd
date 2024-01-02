@@ -30,6 +30,14 @@
 
 #include <pthread.h>
 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+#include <string.h>
+
 int exitflag = 0;
 
 int
@@ -340,23 +348,37 @@ liveScanner (dsd_opts * opts, dsd_state * state)
           printf("liveScanner -> Unable to lock mutex\n");
         }
     }
-	while (1)
+
+    char log_filename[200];
+    strcpy(log_filename, getenv("HOME"));
+    printf("Home directory: %s \n", log_filename);
+
+    strcat(log_filename, "/userdata/output/radio/radio_output.log");
+
+
+    printf("Writing output log to file: %s \n", log_filename);
+
+    FILE *logfile = fopen(log_filename, "w");
+
+
+    while (1)
     {
       noCarrier (opts, state);
-      state->synctype = getFrameSync (opts, state);
+
+      state->synctype = getFrameSync (opts, state, logfile); /// This prints "Sync: abc mod: xyz"
       // recalibrate center/umid/lmid
       state->center = ((state->max) + (state->min)) / 2;
       state->umid = (((state->max) - state->center) * 5 / 8) + state->center;
       state->lmid = (((state->min) - state->center) * 5 / 8) + state->center;
       while (state->synctype != -1)
         {
-          processFrame (opts, state);
+          processFrame (opts, state, logfile); /// This prints the "inlvl: xx%  slot0  [slot1] info" stuff
 
 #ifdef TRACE_DSD
           state->debug_prefix = 'S';
 #endif
 
-          state->synctype = getFrameSync (opts, state);
+          state->synctype = getFrameSync (opts, state, logfile); /// This prints "Sync: abc mod: xyz"
 
 #ifdef TRACE_DSD
           state->debug_prefix = '\0';
@@ -368,6 +390,7 @@ liveScanner (dsd_opts * opts, dsd_state * state)
           state->lmid = (((state->min) - state->center) * 5 / 8) + state->center;
         }
     }
+    fclose(logfile);
 }
 
 void

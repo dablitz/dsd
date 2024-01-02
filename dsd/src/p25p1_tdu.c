@@ -7,7 +7,7 @@
 
 
 void
-processTDU (dsd_opts* opts, dsd_state* state)
+processTDU (dsd_opts* opts, dsd_state* state, FILE *logfile)
 {
     AnalogSignal analog_signal_array[14];
     int status_count;
@@ -23,6 +23,7 @@ processTDU (dsd_opts* opts, dsd_state* state)
     // Next we should find an status dibit
     if (status_count != 35) {
         printf("*** SYNC ERROR\n");
+        fprintf(logfile, "*** SYNC ERROR\n");
     }
 
     // trailing status symbol

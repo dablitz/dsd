@@ -19,7 +19,7 @@
 #include "x2tdma_const.h"
 
 void
-processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
+processX2TDMAvoice (dsd_opts * opts, dsd_state * state, FILE *logfile)
 {
   // extracts AMBE frames from X2TDMA frame
   int i, j, dibit;
@@ -128,6 +128,7 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
         }
       cachbits[24] = 0;
       printf ("%s ", cachbits);
+      fprintf (logfile, "%s ", cachbits);
 #endif
 
       // current slot frame 1
@@ -241,6 +242,7 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
       if ((j == 0) && (opts->errorbars == 1))
         {
           printf ("%s %s  VOICE e:", state->slot0light, state->slot1light);
+          fprintf (logfile, "%s %s  VOICE e:", state->slot0light, state->slot1light);
         }
 
 #ifdef X2TDMA_DUMP
@@ -255,6 +257,7 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
         }
       syncbits[48] = 0;
       printf ("%s ", syncbits);
+      fprintf (logfile, "%s ", syncbits);
 #endif
 
       if (j == 1)
@@ -555,6 +558,7 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
         }
       cachbits[24] = 0;
       printf ("%s ", cachbits);
+      fprintf (logfile, "%s ", cachbits);
 #endif
 
 
@@ -606,6 +610,7 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
         }
       syncbits[48] = 0;
       printf ("%s ", syncbits);
+      fprintf (logfile, "%s ", syncbits);
 #endif
 
       if (j == 5)
@@ -624,19 +629,21 @@ processX2TDMAvoice (dsd_opts * opts, dsd_state * state)
   if (opts->errorbars == 1)
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 
   if (mutecurrentslot == 0)
     {
       if ((eeei == 0) && (aiei == 0))
         {
-          processP25lcw (opts, state, lcformat, mfid, lcinfo);
+          processP25lcw (opts, state, lcformat, mfid, lcinfo, logfile);
         }
       if (opts->p25enc == 1)
         {
           algidhex = strtol (state->algid, NULL, 2);
           kidhex = strtol (state->keyid, NULL, 2);
           printf ("mi: %s algid: $%x kid: $%x\n", mi, algidhex, kidhex);
+          fprintf (logfile, "mi: %s algid: $%x kid: $%x\n", mi, algidhex, kidhex);
         }
     }
 }

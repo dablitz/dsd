@@ -211,7 +211,7 @@ read_zeros(dsd_opts* opts, dsd_state* state, AnalogSignal* analog_signal_array, 
 }
 
 void
-processTDULC (dsd_opts* opts, dsd_state* state)
+processTDULC (dsd_opts* opts, dsd_state* state, FILE *logfile)
 {
   int i;
   char lcinfo[57], lcformat[9], mfid[9];
@@ -294,6 +294,7 @@ processTDULC (dsd_opts* opts, dsd_state* state)
   // Next we should find an status dibit
   if (status_count != 35) {
       printf("*** SYNC ERROR\n");
+      fprintf(logfile, "*** SYNC ERROR\n");
   }
 
   // trailing status symbol
@@ -387,5 +388,5 @@ processTDULC (dsd_opts* opts, dsd_state* state)
   lcinfo[54]  = dodeca_data[0][10] + '0';
   lcinfo[55]  = dodeca_data[0][11] + '0';
 
-  processP25lcw (opts, state, lcformat, mfid, lcinfo);
+  processP25lcw (opts, state, lcformat, mfid, lcinfo, logfile);
 }

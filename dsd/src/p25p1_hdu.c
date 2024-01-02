@@ -213,7 +213,7 @@ correct_golay_dibits_6(char* corrected_hex_data, int hex_count, AnalogSignal* an
  * The important method that processes a full P25 HD unit.
  */
 void
-processHDU(dsd_opts* opts, dsd_state* state)
+processHDU(dsd_opts* opts, dsd_state* state, FILE *logfile)
 {
   char mi[73], mfid[9], algid[9], kid[17], tgid[17], tmpstr[255];
   int i, j;
@@ -458,13 +458,16 @@ processHDU(dsd_opts* opts, dsd_state* state)
       algidhex = strtol (algid, NULL, 2);
       kidhex = strtol (kid, NULL, 2);
       printf ("mi: %s algid: $%x kid: $%x\n", mi, algidhex, kidhex);
+      fprintf (logfile, "mi: %s algid: $%x kid: $%x\n", mi, algidhex, kidhex);
     }
   if (opts->p25lc == 1)
     {
       printf ("mfid: %s tgid: %s ", mfid, tgid);
+      fprintf (logfile, "mfid: %s tgid: %s ", mfid, tgid);
       if (opts->p25tg == 0)
         {
           printf ("\n");
+          fprintf (logfile, "\n");
         }
     }
 
@@ -507,5 +510,6 @@ processHDU(dsd_opts* opts, dsd_state* state)
   if (opts->p25tg == 1)
     {
       printf ("tg: %li\n", talkgroup);
+      fprintf (logfile, "tg: %li\n", talkgroup);
     }
 }

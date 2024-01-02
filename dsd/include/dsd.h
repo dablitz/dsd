@@ -275,8 +275,8 @@ typedef struct
 /*
  * function prototypes
  */
-void processDMRdata (dsd_opts * opts, dsd_state * state);
-void processDMRvoice (dsd_opts * opts, dsd_state * state);
+void processDMRdata (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processDMRvoice (dsd_opts * opts, dsd_state * state, FILE *logfile);
 void processAudio (dsd_opts * opts, dsd_state * state);
 void writeSynthesizedVoice (dsd_opts * opts, dsd_state * state);
 void playSynthesizedVoice (dsd_opts * opts, dsd_state * state);
@@ -296,10 +296,10 @@ void closeMbeOutFile (dsd_opts * opts, dsd_state * state);
 void openMbeOutFile (dsd_opts * opts, dsd_state * state);
 void openWavOutFile (dsd_opts * opts, dsd_state * state);
 void closeWavOutFile (dsd_opts * opts, dsd_state * state);
-void printFrameInfo (dsd_opts * opts, dsd_state * state);
-void processFrame (dsd_opts * opts, dsd_state * state);
-void printFrameSync (dsd_opts * opts, dsd_state * state, char *frametype, int offset, char *modulation);
-int getFrameSync (dsd_opts * opts, dsd_state * state);
+void printFrameInfo (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processFrame (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void printFrameSync (dsd_opts * opts, dsd_state * state, char *frametype, int offset, char *modulation, FILE *logfile);
+int getFrameSync (dsd_opts * opts, dsd_state * state, FILE *logfile);
 int comp (const void *a, const void *b);
 void noCarrier (dsd_opts * opts, dsd_state * state);
 extern void initOpts (dsd_opts * opts);
@@ -315,19 +315,19 @@ void openSerial (dsd_opts * opts, dsd_state * state);
 void resumeScan (dsd_opts * opts, dsd_state * state);
 int getSymbol (dsd_opts * opts, dsd_state * state, int have_sync);
 void upsample (dsd_state * state, float invalue);
-void processDSTAR (dsd_opts * opts, dsd_state * state);
-void processNXDNVoice (dsd_opts * opts, dsd_state * state);
-void processNXDNData (dsd_opts * opts, dsd_state * state);
-void processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, char *lcinfo);
-void processHDU (dsd_opts * opts, dsd_state * state);
-void processLDU1 (dsd_opts * opts, dsd_state * state);
-void processLDU2 (dsd_opts * opts, dsd_state * state);
-void processTDU (dsd_opts * opts, dsd_state * state);
-void processTDULC (dsd_opts * opts, dsd_state * state);
-void processProVoice (dsd_opts * opts, dsd_state * state);
-void processX2TDMAdata (dsd_opts * opts, dsd_state * state);
-void processX2TDMAvoice (dsd_opts * opts, dsd_state * state);
-void processDSTAR_HD (dsd_opts * opts, dsd_state * state);
+void processDSTAR (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processNXDNVoice (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processNXDNData (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processP25lcw (dsd_opts * opts, dsd_state * state, char *lcformat, char *mfid, char *lcinfo, FILE *logfile);
+void processHDU (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processLDU1 (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processLDU2 (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processTDU (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processTDULC (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processProVoice (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processX2TDMAdata (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processX2TDMAvoice (dsd_opts * opts, dsd_state * state, FILE *logfile);
+void processDSTAR_HD (dsd_opts * opts, dsd_state * state, FILE *logfile);
 short dmr_filter(short sample);
 short nxdn_filter(short sample);
 

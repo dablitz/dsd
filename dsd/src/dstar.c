@@ -27,7 +27,7 @@
 #include "dstar_header.h"
 
 
-void processDSTAR(dsd_opts * opts, dsd_state * state) {
+void processDSTAR(dsd_opts * opts, dsd_state * state, FILE *logfile) {
 	// extracts AMBE frames from D-STAR voice frame
 	int i, j, dibit;
 	char ambe_fr[4][24];
@@ -41,10 +41,12 @@ void processDSTAR(dsd_opts * opts, dsd_state * state) {
 
 	if (opts->errorbars == 1) {
 		printf("e:");
+		fprintf(logfile, "e:");
 	}
 
 #ifdef DSTAR_DUMP
 	printf ("\n");
+	fprintf (logfile, "\n");
 #endif
 
 	if (state->synctype == 18) {
@@ -75,6 +77,7 @@ void processDSTAR(dsd_opts * opts, dsd_state * state) {
 			if ((bitbuffer & 0x00FFFFFF) == 0x00AAB468) {
 				// we're slipping bits
 				printf("sync in voice after i=%d, restarting\n", i);
+				fprintf(logfile, "sync in voice after i=%d, restarting\n", i);
 				//ugh just start over
 				i = 0;
 			    w = dW;
@@ -102,6 +105,7 @@ void processDSTAR(dsd_opts * opts, dsd_state * state) {
 				// looking if we're slipping bits
 				if (i != 96) {
 					printf("sync after i=%d\n", i);
+					fprintf(logfile, "sync after i=%d\n", i);
 					i = 96;
 				}
 			}
@@ -119,9 +123,12 @@ void processDSTAR(dsd_opts * opts, dsd_state * state) {
 		} else if ((bitbuffer & 0x00FFFFFF) == 0xAAAAAA) {
 			//End of transmission
 			printf("End of transmission\n");
+			fprintf(logfile, "End of transmission\n");
 			goto end;
 		} else if (framecount % 21 == 0) {
 			printf("Missed sync on framecount = %d, value = %x/%x/%x\n",
+					framecount, slowdata[0], slowdata[1], slowdata[2]);
+			fprintf(logfile, "Missed sync on framecount = %d, value = %x/%x/%x\n",
 					framecount, slowdata[0], slowdata[1], slowdata[2]);
 			sync_missed++;
 		} else if (framecount != 0 && (bitbuffer & 0x00FFFFFF) != 0x000000) {
@@ -139,10 +146,11 @@ void processDSTAR(dsd_opts * opts, dsd_state * state) {
 
 	end: if (opts->errorbars == 1) {
 		printf("\n");
+		fprintf(logfile, "\n");
 	}
 }
 
-void processDSTAR_HD(dsd_opts * opts, dsd_state * state) {
+void processDSTAR_HD(dsd_opts * opts, dsd_state * state, FILE *logfile) {
 
 	int i, j;
 	int radioheaderbuffer[660];
@@ -157,7 +165,7 @@ void processDSTAR_HD(dsd_opts * opts, dsd_state * state) {
 
 	//We officially have sync now, so just pass on to the above routine:
 
-	processDSTAR(opts, state);
+	processDSTAR(opts, state, logfile);
 
 }
 

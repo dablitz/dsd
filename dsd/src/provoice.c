@@ -2,7 +2,7 @@
 #include "provoice_const.h"
 
 void
-processProVoice (dsd_opts * opts, dsd_state * state)
+processProVoice (dsd_opts * opts, dsd_state * state, FILE *logfile)
 {
   int i, j, dibit;
 
@@ -13,6 +13,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
   if (opts->errorbars == 1)
     {
       printf ("VOICE e:");
+      fprintf (logfile, "VOICE e:");
     }
 
   for (i = 0; i < 64; i++)
@@ -20,10 +21,12 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   // lid
@@ -32,10 +35,12 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   for (i = 0; i < 64; i++)
@@ -43,10 +48,12 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   // imbe frames 1,2 first half
@@ -60,6 +67,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -67,6 +75,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -75,6 +84,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -82,6 +92,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
 
@@ -90,6 +101,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -97,6 +109,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 6;
   x -= 6;
@@ -105,6 +118,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -112,17 +126,21 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   // spacer bits
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
+  fprintf (logfile, "%i", dibit);
 #endif
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
   printf (" ");
+  fprintf (logfile, "%i", dibit);
+  fprintf (logfile, " ");
 #endif
 
   // imbe frames 1,2 second half
@@ -132,6 +150,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -139,6 +158,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
 
   for (i = 0; i < 3; i++)
@@ -148,6 +168,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -155,6 +176,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -163,6 +185,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -170,6 +193,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
 
@@ -178,6 +202,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -185,6 +210,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 5;
   x -= 5;
@@ -193,6 +219,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -200,6 +227,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
 
   for (i = 0; i < 7; i++)
@@ -209,6 +237,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -216,6 +245,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -224,6 +254,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -231,6 +262,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
 
@@ -239,6 +271,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -246,6 +279,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 5;
   x -= 5;
@@ -254,6 +288,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -261,6 +296,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   processMbeFrame (opts, state, NULL, NULL, imbe7100_fr1);
@@ -270,11 +306,14 @@ processProVoice (dsd_opts * opts, dsd_state * state)
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
+  fprintf (logfile, "%i", dibit);
 #endif
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
   printf (" ");
+  fprintf (logfile, "%i", dibit);
+  fprintf (logfile, " ");
 #endif
 
   for (i = 0; i < 16; i++)
@@ -282,10 +321,12 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   // imbe frames 3,4 first half
@@ -298,6 +339,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -305,6 +347,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -313,6 +356,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -320,6 +364,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
   for (j = 0; j < 6; j++)
@@ -327,6 +372,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -334,6 +380,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 6;
   x -= 6;
@@ -342,6 +389,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -349,17 +397,21 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   // spacer bits
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
+  fprintf (logfile, "%i", dibit);
 #endif
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
   printf ("_");
+  fprintf (logfile, "%i", dibit);
+  fprintf (logfile, "_");
 #endif
 
   // imbe frames 3,4 second half
@@ -368,6 +420,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -375,6 +428,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   for (i = 0; i < 3; i++)
     {
@@ -383,6 +437,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -390,6 +445,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -398,6 +454,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -405,6 +462,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
 
@@ -413,6 +471,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -420,6 +479,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 5;
   x -= 5;
@@ -428,6 +488,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -435,6 +496,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   for (i = 0; i < 7; i++)
@@ -444,6 +506,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr1[*w][*x] = dibit;
           w++;
@@ -451,6 +514,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
       w -= 6;
       x -= 6;
@@ -459,6 +523,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
           printf ("%i", dibit);
+          fprintf (logfile, "%i", dibit);
 #endif
           imbe7100_fr2[*w][*x] = dibit;
           w++;
@@ -466,6 +531,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
         }
 #ifdef PROVOICE_DUMP
       printf ("_");
+      fprintf (logfile, "_");
 #endif
     }
 
@@ -474,6 +540,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr1[*w][*x] = dibit;
       w++;
@@ -481,6 +548,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf ("_");
+  fprintf (logfile, "_");
 #endif
   w -= 5;
   x -= 5;
@@ -489,6 +557,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
       printf ("%i", dibit);
+      fprintf (logfile, "%i", dibit);
 #endif
       imbe7100_fr2[*w][*x] = dibit;
       w++;
@@ -496,6 +565,7 @@ processProVoice (dsd_opts * opts, dsd_state * state)
     }
 #ifdef PROVOICE_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   processMbeFrame (opts, state, NULL, NULL, imbe7100_fr1);
@@ -505,15 +575,19 @@ processProVoice (dsd_opts * opts, dsd_state * state)
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
+  fprintf (logfile, "%i", dibit);
 #endif
   dibit = getDibit (opts, state);
 #ifdef PROVOICE_DUMP
   printf ("%i", dibit);
   printf (" ");
+  fprintf (logfile, "%i", dibit);
+  fprintf (logfile, " ");
 #endif
 
   if (opts->errorbars == 1)
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 }

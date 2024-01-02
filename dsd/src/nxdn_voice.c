@@ -2,7 +2,7 @@
 #include "nxdn_const.h"
 
 void
-processNXDNVoice (dsd_opts * opts, dsd_state * state)
+processNXDNVoice (dsd_opts * opts, dsd_state * state, FILE *logfile)
 {
   int i, j, dibit;
   char ambe_fr[4][24];
@@ -12,6 +12,7 @@ processNXDNVoice (dsd_opts * opts, dsd_state * state)
   if (opts->errorbars == 1)
     {
       printf ("VOICE e:");
+      fprintf (logfile, "VOICE e:");
     }
 
   for (i = 0; i < 30; i++)
@@ -19,10 +20,12 @@ processNXDNVoice (dsd_opts * opts, dsd_state * state)
       dibit = getDibit (opts, state);
 #ifdef NXDN_DUMP
       printf ("%c", dibit + 48);
+      fprintf (logfile, "%c", dibit + 48);
 #endif
     }
 #ifdef NXDN_DUMP
   printf (" ");
+  fprintf (logfile, " ");
 #endif
 
   pr = nxdnpr;
@@ -37,6 +40,7 @@ processNXDNVoice (dsd_opts * opts, dsd_state * state)
           dibit = getDibit (opts, state);
 #ifdef NXDN_DUMP
           printf ("%c", dibit + 48);
+          fprintf (logfile, "%c", dibit + 48);
 #endif
           ambe_fr[*w][*x] = *pr ^ (1 & (dibit >> 1));   // bit 1
           pr++;
@@ -49,11 +53,13 @@ processNXDNVoice (dsd_opts * opts, dsd_state * state)
       processMbeFrame (opts, state, NULL, ambe_fr, NULL);
 #ifdef NXDN_DUMP
       printf (" ");
+      fprintf (logfile, " ");
 #endif
     }
 
   if (opts->errorbars == 1)
     {
       printf ("\n");
+      fprintf (logfile, "\n");
     }
 }

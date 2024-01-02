@@ -15,7 +15,7 @@ cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release ../
 make -j16
 (echo "y"
-echo "Misc GnuRadio blocks."
+echo "Blocks to add Digital Speech Decoder (DSD) support for GNURadio."
 echo ""
 echo ""
 echo "n"
